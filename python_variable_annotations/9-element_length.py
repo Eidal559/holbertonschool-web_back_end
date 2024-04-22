@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
+''' Description: Annotate the below function’s parameters and
+                 return values with the appropriate types
+    Arguments: lst: Iterable[Sequence]
+'''
 
-from typing import List, Tuple
+from typing import Iterable, Sequence, List, Tuple
 
 
-def element_length(lst: List[str]) -> List[Tuple[str, int]]:
-    """Returns a list of tuples containing each element of its length."""
+def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
+    '''Return list of tuples, one for each element, of which
+       consists of the element itself and its length.
+    '''
     return [(i, len(i)) for i in lst]
