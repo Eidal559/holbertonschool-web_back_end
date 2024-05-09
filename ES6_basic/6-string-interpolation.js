@@ -11,4 +11,4 @@ with a per capita personal income of ${budget.income}. As of 2015, San Francisco
 of ${budget.gdp}, and a GDP per capita of ${budget.capita}.`;
 }
 
-module.exports = getSanFranciscoDescription;
+export default getSanFranciscoDescription;
