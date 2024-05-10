@@ -29,6 +29,9 @@ export class StudentHolberton {
   get holbertonClass() {
     return this._holbertonClass;
   }
+  fullStudentDescription() {
+    return `${this.fullName} is a student in the ${this.holbertonClass.year} class at Holberton School located in ${this.holbertonClass.location}.`;
+  }
 }
 const student1 = new StudentHolberton('Guillaume', 'Salva', class2020);
 const student2 = new StudentHolberton('John', 'Doe', class2020);
