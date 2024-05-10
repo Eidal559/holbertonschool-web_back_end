@@ -31,8 +31,8 @@ export class StudentHolberton {
     return this._holbertonClass;
   }
 
-  fullStudentDescription() {
-    return `${this.fullName} is a student in the ${this.holbertonClass.year} class at Holberton School located in ${this.holbertonClass.location}.`;
+  get fullStudentDescription() {
+    return `${this._firstName} ${this._lastName} - ${this._holbertonClass.year} - ${this._holbertonClass.location}`;
   }
 }
 
