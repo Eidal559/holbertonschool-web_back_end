@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-
 import re
 
 def filter_datum(fields, redaction, message, separator):
-    pattern = '|'.join([rf'(?<={field}=)[^{separator}]+' for field in fields])
-    return re.sub(pattern, redaction, message)
+    for field in fields:
+        # Use regex to search for the field and replace its value
+        message = re.sub(rf'(?<={field}=)[^{separator}]+', redaction, message)
+    return message
