@@ -2,7 +2,7 @@
 """
 Encrypting passwords
 """
-import bcrypt
+import bcrypt # type: ignore
 
 
 def hash_password(password: str) -> bytes:
