@@ -33,7 +33,7 @@ class BasicAuth(Auth):
                 return None
 
     def extract_user_credentials(
-            self, decoded_base64_authorization_header: str) -> (str, str):
+            self, decoded_base64_authorization_header: str) -> (str, str):  # type: ignore
         ''' return the user mail and the password '''
         c = decoded_base64_authorization_header
         if c and type(c) == str and ":" in c:
@@ -43,7 +43,7 @@ class BasicAuth(Auth):
         return(None, None)
 
     def user_object_from_credentials(
-            self, user_email: str, user_pwd: str) -> TypeVar('User'):
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):  # type: ignore
         ''' def user object from credentials '''
         if type(user_email) != str:
             return None
@@ -56,7 +56,7 @@ class BasicAuth(Auth):
                     return user
         return None
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         ''' complete basic Authentification '''
         if request:
             auth_head = self.authorization_header(request)
