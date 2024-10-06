@@ -58,7 +58,7 @@ class Auth:
 
         return request.headers.get('Authorization', None)
 
-    def current_user(self, request=None) -> TypeVar('User'): # type: ignore
+    def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         """
             Look current user
 

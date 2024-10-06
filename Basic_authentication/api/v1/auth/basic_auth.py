@@ -61,7 +61,7 @@ class BasicAuth(Auth):
 
     def extract_user_credentials(self,
                                  decoded_base64_authorization_header: str
-                                 ) -> (str, str): # type: ignore
+                                 ) -> (str, str):  # type: ignore
         """
             Take user credentials
 
@@ -84,7 +84,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(self,
                                      user_email: str, user_pwd: str
-                                     ) -> TypeVar('User'): # type: ignore
+                                     ) -> TypeVar('User'):  # type: ignore
         """
             Make or Get User from credentials
 
@@ -101,7 +101,7 @@ class BasicAuth(Auth):
             return None
 
         try:
-            exist_user: List[TypeVar('User')] # type: ignore
+            exist_user: List[TypeVar('User')]  # type: ignore
             exist_user = User.search({"email": user_email})
         except Exception:
             return None
@@ -112,7 +112,7 @@ class BasicAuth(Auth):
 
         return None
 
-    def current_user(self, request=None) -> TypeVar('User'): # type: ignore
+    def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         """
             Overload func to get the info of the user
 
