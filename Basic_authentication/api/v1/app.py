@@ -6,11 +6,13 @@ from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
-import os
+from typing import Optional
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
+# Initialize authentication based on environment variable
 auth = None
 AUTH_TYPE = getenv('AUTH_TYPE')
 
@@ -57,33 +59,38 @@ def forbidden(error) -> str:
 
 
 @app.before_request
-def before_request() -> str:
+def before_request() -> Optional[str]:
     """
-    Execute before each request
+    Execute before each request to validate authentication and user.
 
     Return:
-        String or nothing
+        String or None (Nothing if the request is valid)
     """
     if auth is None:
         return
 
+    # Exclude certain paths from requiring authentication
     excluded_paths = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/'
     ]
 
+    # If the path does not require authentication, allow the request
     if not auth.require_auth(request.path, excluded_paths):
         return
 
+    # If there's no authorization header, respond with 401
     if auth.authorization_header(request) is None:
         abort(401)
 
+    # If the user cannot be authenticated, respond with 403
     if auth.current_user(request) is None:
         abort(403)
 
 
 if __name__ == "__main__":
+    # Retrieve host and port with fallback defaults
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
     app.run(host=host, port=port)
