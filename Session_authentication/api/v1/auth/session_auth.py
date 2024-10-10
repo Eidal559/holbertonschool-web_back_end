@@ -1,50 +1,63 @@
 #!/usr/bin/env python3
-'''Session Auth class'''
+''' Define SessionAuth class. '''
 
-from flask import request
-from typing import List, TypeVar
 from api.v1.auth.auth import Auth
-import base64
-import uuid
+from uuid import uuid4
 from models.user import User
 
 
 class SessionAuth(Auth):
-    '''self descriptive'''
+    ''' Extend behavior of Auth class for session authentication. '''
     user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
-        '''self descriptive'''
-        if not user_id or not isinstance(user_id, str):
+        ''' Create and return a session ID for a user ID. '''
+        if user_id is None or not isinstance(user_id, str):
             return None
-        session_id = str(uuid.uuid4())
-        self.user_id_by_session_id[session_id] = user_id
+
+        session_id = str(uuid4())
+        SessionAuth.user_id_by_session_id[session_id] = user_id
+
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
-        '''self descriptive'''
-        if session_id and isinstance(session_id, str):
-            return self.user_id_by_session_id.get(session_id)
-        return None
+        ''' Return user ID associated with specified session ID. '''
+        if session_id is None or not isinstance(session_id, str):
+            return None
+
+        return SessionAuth.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None):
-        '''self descriptive'''
-        session_cookie = self.session_cookie(request)
-        session_id = self.user_id_for_session_id(session_cookie)
-        return User.get(session_id)
+        ''' Returns a User instance based on a cookie value '''
+
+        session_id = self.session_cookie(request)
+        # print(session_id)
+        if session_id is None:
+            return None
+
+        user_id = self.user_id_for_session_id(session_id)
+        # print(user_id)
+
+        return User.get(user_id)
 
     def destroy_session(self, request=None):
-        '''self descriptive'''
-        if not request:
-            return False
-        session_cookie = self.session_cookie(request)
+        """Deletes de user session / logout"""
 
-        if not session_cookie:
+        if request is None:
             return False
 
-        user_id = self.user_id_for_session_id(session_cookie)
+        session_id = self.session_cookie(request)
+        if session_id is None:
+            return False
+
+        user_id = self.user_id_for_session_id(session_id)
 
         if not user_id:
             return False
-        self.user_id_by_session_id.pop(session_cookie)
+
+        try:
+            del self.user_id_by_session_id[session_id]
+        except Exception:
+            pass
+
         return True
