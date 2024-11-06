@@ -6,7 +6,7 @@ for storing and retrieving data with generated keys.
 
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable, Optional
 
 class Cache:
     """
@@ -44,3 +44,58 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn: Optional[Callable] = None) -> Optional[Union[str, bytes, int, float]]:
+        """
+        Retrieves data from Redis and applies a conversion function if provided.
+
+        Parameters
+        ----------
+        key : str
+            The key to retrieve the data from Redis.
+        fn : Callable, optional
+            A function to apply to the data to convert it back to the desired format.
+
+        Returns
+        -------
+        Optional[Union[str, bytes, int, float]]
+            The retrieved data in its original format if the key exists, otherwise None.
+        """
+        data = self._redis.get(key)
+        if data is None:
+            return None
+        if fn:
+            return fn(data)
+        return data
+
+    def get_str(self, key: str) -> Optional[str]:
+        """
+        Retrieves data from Redis and converts it to a string.
+
+        Parameters
+        ----------
+        key : str
+            The key to retrieve the data from Redis.
+
+        Returns
+        -------
+        Optional[str]
+            The retrieved data as a string if the key exists, otherwise None.
+        """
+        return self.get(key, lambda d: d.decode("utf-8"))
+
+    def get_int(self, key: str) -> Optional[int]:
+        """
+        Retrieves data from Redis and converts it to an integer.
+
+        Parameters
+        ----------
+        key : str
+            The key to retrieve the data from Redis.
+
+        Returns
+        -------
+        Optional[int]
+            The retrieved data as an integer if the key exists, otherwise None.
+        """
+        return self.get(key, int)
