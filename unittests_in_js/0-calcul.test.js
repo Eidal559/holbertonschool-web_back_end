@@ -11,7 +11,7 @@ describe('calculateNumber', () => {
 
   it('should handle edge cases with negative numbers', () => {
     assert.strictEqual(calculateNumber(-1.4, -2.6), -4);
-    assert.strictEqual(calculateNumber(-1.5, 2.5), 1);
+    assert.strictEqual(calculateNumber(-1.5, 2.5), 2); // Updated this line
   });
 
   it('should handle zero values correctly', () => {
