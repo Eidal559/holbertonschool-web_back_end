@@ -11,9 +11,6 @@ client.on('error', (err) => {
     console.error('Redis client not connected to the server:', err.message);
 });
 
-/**
- * Function to store values in a hash using hset.
- */
 function setHolbertonSchools() {
     client.hset('HolbertonSchools', 'Portland', '50', print);
     client.hset('HolbertonSchools', 'Seattle', '80', print);
@@ -23,9 +20,6 @@ function setHolbertonSchools() {
     client.hset('HolbertonSchools', 'Paris', '2', print);
 }
 
-/**
- * Function to display the hash using hgetall.
- */
 function displayHolbertonSchools() {
     client.hgetall('HolbertonSchools', (err, result) => {
         if (err) {
@@ -36,6 +30,5 @@ function displayHolbertonSchools() {
     });
 }
 
-// Store the values in the hash and then display them
 setHolbertonSchools();
 displayHolbertonSchools();

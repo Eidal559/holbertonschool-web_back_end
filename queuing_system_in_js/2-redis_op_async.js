@@ -15,16 +15,10 @@ client.on('error', (err) => {
 // Promisify the get method
 const getAsync = promisify(client.get).bind(client);
 
-/**
- * Function to set a key-value pair in Redis.
- */
 function setNewSchool(schoolName, value) {
     client.set(schoolName, value, print);
 }
 
-/**
- * Async function to get the value of a key from Redis.
- */
 async function displaySchoolValue(schoolName) {
     try {
         const result = await getAsync(schoolName);

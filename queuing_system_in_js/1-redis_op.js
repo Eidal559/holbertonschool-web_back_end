@@ -11,18 +11,10 @@ client.on('error', (err) => {
     console.error('Redis client not connected to the server:', err.message);
 });
 
-/**
- * Function to set a key-value pair in Redis.
- * Uses the `print` callback for logging.
- */
 function setNewSchool(schoolName, value) {
     client.set(schoolName, value, print);
 }
 
-/**
- * Function to get the value of a key from Redis.
- * Logs the result to the console.
- */
 function displaySchoolValue(schoolName) {
     client.get(schoolName, (err, result) => {
         if (err) {
