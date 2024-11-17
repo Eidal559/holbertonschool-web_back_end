@@ -1,26 +1,39 @@
-import redis from 'redis';
+import { createClient, print } from 'redis';
 
-const cli = redis.createClient();
+// Create Redis client
+const client = createClient();
 
-cli.on('error', (error) => {
-  console.log(`Redis client not connected to the server: ${error.message}`);
+client.on('connect', () => {
+    console.log('Redis client connected to the server');
 });
 
-cli.on('connect', () => {
-  console.log('Redis client connected to the server');
+client.on('error', (err) => {
+    console.error('Redis client not connected to the server:', err.message);
 });
 
-// Task 1
+/**
+ * Function to set a key-value pair in Redis.
+ * Uses the `print` callback for logging.
+ */
 function setNewSchool(schoolName, value) {
-  cli.set(schoolName, value, redis.print);
+    client.set(schoolName, value, print);
 }
 
+/**
+ * Function to get the value of a key from Redis.
+ * Logs the result to the console.
+ */
 function displaySchoolValue(schoolName) {
-  cli.get(schoolName, (err, res) => {
-    console.log(res);
-  });
+    client.get(schoolName, (err, result) => {
+        if (err) {
+            console.error('Error fetching value:', err.message);
+        } else {
+            console.log(result);
+        }
+    });
 }
 
+// Example usage
 displaySchoolValue('Holberton');
 setNewSchool('HolbertonSanFrancisco', '100');
 displaySchoolValue('HolbertonSanFrancisco');
